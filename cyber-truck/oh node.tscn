@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://dsp66pegdb0y7"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_5luvn"]
+[ext_resource type="Script" path="res://hud.gd" id="1_6yoae"]
+[ext_resource type="FontFile" uid="uid://b3gptuuw7dhif" path="res://PressStart2P-Regular.ttf" id="1_8a0vw"]
+[ext_resource type="PackedScene" uid="uid://ea3xdcopsk27" path="res://sparks.tscn" id="3_bgexc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3ldf1"]
+font = ExtResource("1_8a0vw")
+font_size = 24
+
+[node name="oh node" type="Node2D" node_paths=PackedStringArray("hud")]
+script = ExtResource("1_5luvn")
+sparks = ExtResource("3_bgexc")
+hud = NodePath("HUD")
+
+[node name="HUD" type="CanvasLayer" parent="." node_paths=PackedStringArray("scoreLabel", "pointsPerTimeLabel")]
+offset = Vector2(16, 16)
+transform = Transform2D(1, 0, 0, 1, 16, 16)
+script = ExtResource("1_6yoae")
+scoreLabel = NodePath("Score")
+pointsPerTimeLabel = NodePath("PointsPerTime")
+
+[node name="PointsPerTime" type="Label" parent="HUD"]
+offset_top = -2.0
+offset_right = 864.0
+offset_bottom = 22.0
+text = "oh node! there is no points per time"
+label_settings = SubResource("LabelSettings_3ldf1")
+
+[node name="Score" type="Label" parent="HUD"]
+offset_top = 33.0
+offset_right = 864.0
+offset_bottom = 57.0
+text = "oh node! there is no score points"
+label_settings = SubResource("LabelSettings_3ldf1")
+
+[node name="Timer" type="Timer" parent="HUD"]
+autostart = true
+
+[node name="Button" type="Button" parent="HUD"]
+offset_top = 74.0
+offset_right = 8.0
+offset_bottom = 82.0
+text = "Buy More Points Per Second (50 points for 1 pps)"
+
+[node name="Sparks" parent="." instance=ExtResource("3_bgexc")]
+
+[connection signal="timeout" from="HUD/Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="HUD/Button" to="HUD" method="_addPointsPerTime"]
